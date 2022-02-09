@@ -1,6 +1,6 @@
 import styled from "@emotion/styled/macro";
 
-export const Gallery = styled.ul`
+export const CountryGallery = styled.ul`
   display: grid;
   max-width: calc(100vw - 48px);
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));

@@ -1,6 +1,8 @@
 import styled from "@emotion/styled/macro";
 
-export const Header = styled.header`
+import { DebounceInput } from "react-debounce-input";
+
+export const SearchbarContainer = styled.div`
   top: 0;
   left: 0;
   position: sticky;
@@ -19,7 +21,7 @@ export const Header = styled.header`
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 `;
 
-export const Form = styled.form`
+export const InputContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -58,7 +60,7 @@ export const FormBtnLabel = styled.span`
   border: 0;
 `;
 
-export const FormBtnInput = styled.input`
+export const SearchInput = styled(DebounceInput)`
   display: inline-block;
   width: 100%;
   font: inherit;

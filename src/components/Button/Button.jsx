@@ -1,21 +1,31 @@
-import PropTypes from "prop-types";
+import Button from "@mui/material/Button";
 
-import { MoreButton } from "./Button.styles";
-
-const LoadMoreButton = ({ onClick }) => {
+export default function ResetButton({ onClick }) {
   return (
-    <MoreButton type="submit" onClick={onClick}>
-      Load more
-    </MoreButton>
+    <Button variant="contained" color="grey" onClick={onClick}>
+      Reset
+    </Button>
   );
-};
+}
 
-LoadMoreButton.defaultProps = {
-  onClick: () => null,
-};
+// import PropTypes from "prop-types";
 
-LoadMoreButton.propTypes = {
-  onClick: PropTypes.func,
-};
+// import { MoreButton } from "./Button.styles";
 
-export default LoadMoreButton;
+// const LoadMoreButton = ({ onClick }) => {
+//   return (
+//     <MoreButton type="submit" onClick={onClick}>
+//       Load more
+//     </MoreButton>
+//   );
+// };
+
+// LoadMoreButton.defaultProps = {
+//   onClick: () => null,
+// };
+
+// LoadMoreButton.propTypes = {
+//   onClick: PropTypes.func,
+// };
+
+// export default LoadMoreButton;

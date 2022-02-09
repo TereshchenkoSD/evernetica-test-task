@@ -1,35 +1,45 @@
 import PropTypes from "prop-types";
+import { useRef } from "react";
 
 import {
-  Header,
-  Form,
+  SearchbarContainer,
+  InputContainer,
   FormBtn,
   FormBtnLabel,
-  FormBtnInput,
+  SearchInput,
 } from "./Searchbar.styles";
 
-const Searchbar = ({ onSearch }) => {
-  const handleSearch = (e) => {
-    e.preventDefault();
-    onSearch(e.target.elements.imageName.value);
+import ResetButton from "../Button/Button";
+
+const Searchbar = ({ onSearch, resetState }) => {
+  const inputFieldRef = useRef();
+
+  const renewState = () => {
+    resetState();
+  };
+
+  const resetSearchQuery = () => {
+    inputFieldRef.current.value = "";
+
+    renewState();
   };
 
   return (
-    <Header>
-      <Form onSubmit={handleSearch}>
-        <FormBtn type="submit">
-          <FormBtnLabel>Search</FormBtnLabel>
-        </FormBtn>
-
-        <FormBtnInput
+    <SearchbarContainer>
+      <InputContainer>
+        <SearchInput
           type="text"
           autoComplete="off"
+          minLength={1}
+          debounceTimeout={500}
+          onChange={(e) => onSearch(e.target.value)}
           autoFocus
           placeholder="Search images and photos"
-          name="imageName"
+          inputRef={inputFieldRef}
         />
-      </Form>
-    </Header>
+      </InputContainer>
+      <ResetButton onClick={resetSearchQuery} />
+    </SearchbarContainer>
   );
 };
 

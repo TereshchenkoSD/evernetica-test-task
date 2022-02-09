@@ -4,98 +4,134 @@ import toast, { Toaster } from "react-hot-toast";
 
 import Searchbar from "./components/Searchbar";
 
-import { fetchImages } from "./components/services/Api";
+import { fetchCountries } from "./components/services/Api";
 
-import ImageGallery from "./components/ImageGallery";
+import Loader from "./components/Loader";
 
-import Modal from "./components/Modal";
+import CountryList from "./components/CountryList";
 
 import { AppContainer } from "./App.styles";
-import LoadMoreButton from "./components/Button";
 
 const App = () => {
-  const [imageName, setImageName] = useState(null);
-  const [images, setImages] = useState([]);
+  const [countryName, setCountryName] = useState("");
+  const [countries, setCountries] = useState([]);
   const [reqStatus, setReqStatus] = useState("idle");
-  const [page, setPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
+  // const [page, setPage] = useState(1);
+  // const [showModal, setShowModal] = useState(false);
+  // const [selectedImage, setSelectedImage] = useState("");
   const [error, setError] = useState(null);
 
-  const showImages = images.length > 11;
+  // const showImages = images.length > 11;
+
+  const handleNameChange = (countryName) => {
+    setCountryName(countryName);
+  };
 
   useEffect(() => {
-    if (!imageName) {
+    if (countries.length > 10) {
+      toast("Too many matches. Please enter more specific name.");
+    }
+  }, [countries.length]);
+
+  useEffect(() => {
+    if (countryName === "") {
       return;
     }
-    setReqStatus("pending");
-
-    async function onFetchImages() {
+    async function getCountries() {
       try {
-        const images = await fetchImages(page, imageName);
-        setImages((prevState) => [...prevState, ...images]);
+        setReqStatus("pending");
+        setCountries([]);
+        const countries = await fetchCountries(countryName);
         setReqStatus("resolved");
+        setCountries(countries);
       } catch (error) {
         setReqStatus("rejected");
-        setError(true);
-        toast.error("Ooops, there is no such image");
+        toast.error("No country with this name");
       }
     }
 
-    onFetchImages();
-
-    if (page > 1) {
-      scrollPageToEnd();
-    }
-  }, [page, imageName]);
-
-  const handleFormSubmit = (imageName) => {
-    if (imageName.trim() === "") {
-      toast.error("Invalid search query");
-      return;
-    }
-    resetState();
-    setImageName(imageName);
-  };
-
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
-
-  const handleSelectedImage = (data) => {
-    setSelectedImage(data);
-    toggleModal();
-  };
-
-  const scrollPageToEnd = () => {
-    setTimeout(() => {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
-    }, 1000);
-  };
-
-  const onLoadMoreBtn = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
+    getCountries();
+  }, [countryName]);
 
   const resetState = () => {
-    setImageName(null);
-    setPage(1);
-    setImages([]);
+    setCountryName("");
+    setCountries([]);
     setReqStatus("idle");
   };
 
+  const showCountryList = countries.length >= 1 && countries.length < 10;
+
+  const showCountryInfo = countries.length === 1;
+
+  // useEffect(() => {
+  //   if (!imageName) {
+  //     return;
+  //   }
+  //   setReqStatus("pending");
+
+  //   async function onFetchImages() {
+  //     try {
+  //       const images = await fetchImages(page, imageName);
+  //       setImages((prevState) => [...prevState, ...images]);
+  //       setReqStatus("resolved");
+  //     } catch (error) {
+  //       setReqStatus("rejected");
+  //       setError(true);
+  //       toast.error("Ooops, there is no such image");
+  //     }
+  //   }
+
+  //   onFetchImages();
+
+  //   if (page > 1) {
+  //     scrollPageToEnd();
+  //   }
+  // }, [page, imageName]);
+
+  // const handleFormSubmit = (imageName) => {
+  //   if (imageName.trim() === "") {
+  //     toast.error("Invalid search query");
+  //     return;
+  //   }
+  //   resetState();
+  //   setImageName(imageName);
+  // };
+
+  // const toggleModal = () => {
+  //   setShowModal(!showModal);
+  // };
+
+  // const handleSelectedImage = (data) => {
+  //   setSelectedImage(data);
+  //   toggleModal();
+  // };
+
+  // const scrollPageToEnd = () => {
+  //   setTimeout(() => {
+  //     window.scrollTo({
+  //       top: document.documentElement.scrollHeight,
+  //       behavior: "smooth",
+  //     });
+  //   }, 1000);
+  // };
+
+  // const onLoadMoreBtn = () => {
+  //   setPage((prevPage) => prevPage + 1);
+  // };
+
+  // const resetState = () => {
+  //   setImageName(null);
+  //   setPage(1);
+  //   setImages([]);
+  //   setReqStatus("idle");
+  // };
+
   return (
     <AppContainer>
-      {error && toast.error("No such pictures on the server!")}
-      <Searchbar onSearch={handleFormSubmit} />
-      <ImageGallery onSelect={handleSelectedImage} images={images} />
-      {showImages && <LoadMoreButton onClick={onLoadMoreBtn} />}
-      {showModal && (
-        <Modal onClose={toggleModal} largeImageURL={selectedImage} />
-      )}
+      {error && toast.error("No such countries!")}
+      <Searchbar onSearch={handleNameChange} resetState={resetState} />
+      {reqStatus === "pending" && <Loader />}
+      {showCountryList && <CountryList countries={countries} />}
       <Toaster position="top-right" />
     </AppContainer>
   );
