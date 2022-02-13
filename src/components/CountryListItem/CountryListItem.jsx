@@ -2,19 +2,33 @@ import PropTypes from "prop-types";
 
 import {
   ListItem,
-  CountryCard,
   CountryName,
+  CountryCapital,
+  CountryCallingCode,
   CountryCode,
+  FlagImageContainer,
+  FlagImage,
+  CountryDataContainer,
 } from "./CountryListItem.styles";
 
-const CountryListItem = ({ name, callingCodes, alpha3Code }) => {
+const CountryListItem = ({
+  name,
+  callingCodes,
+  alpha3Code,
+  capital,
+  flags,
+}) => {
   return (
     <ListItem>
-      <CountryCard>
-        <CountryName>{name}</CountryName>
-        <CountryCode>{callingCodes}</CountryCode>
-        <p>{alpha3Code}</p>
-      </CountryCard>
+      <FlagImageContainer>
+        <FlagImage src={flags.png} alt={name} />
+      </FlagImageContainer>
+      <CountryDataContainer>
+        <CountryName>Country name: {name}</CountryName>
+        <CountryCapital>Capital: {capital}</CountryCapital>
+        <CountryCallingCode>Calling codes: {callingCodes}</CountryCallingCode>
+        <CountryCode>Country code: {alpha3Code}</CountryCode>
+      </CountryDataContainer>
     </ListItem>
   );
 };

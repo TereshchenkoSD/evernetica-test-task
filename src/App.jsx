@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 
 import toast, { Toaster } from "react-hot-toast";
 
-import Searchbar from "./components/Searchbar";
+import { Switch, Route } from "react-router-dom";
+
+import SearchForm from "./components/SearchForm";
 
 import { fetchCountries } from "./components/services/Api";
 
@@ -59,7 +61,8 @@ const App = () => {
     setReqStatus("idle");
   };
 
-  const showCountryList = countries.length >= 1 && countries.length < 10;
+  const showCountryList =
+    countries.length >= 1 && countries.length < 10 && countryName !== "";
 
   const showCountryInfo = countries.length === 1;
 
@@ -129,7 +132,11 @@ const App = () => {
   return (
     <AppContainer>
       {error && toast.error("No such countries!")}
-      <Searchbar onSearch={handleNameChange} resetState={resetState} />
+      <SearchForm
+        onSearch={handleNameChange}
+        resetState={resetState}
+        countryName={countryName}
+      />
       {reqStatus === "pending" && <Loader />}
       {showCountryList && <CountryList countries={countries} />}
       <Toaster position="top-right" />
