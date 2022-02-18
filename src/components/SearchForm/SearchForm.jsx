@@ -19,10 +19,10 @@ const SearchForm = ({ onSearch, resetState, countryName }) => {
           type="text"
           autoComplete="off"
           minLength={1}
-          debounceTimeout={500}
+          debounceTimeout={700}
           onChange={(e) => onSearch(e.target.value)}
           autoFocus
-          placeholder="Search images and photos"
+          placeholder="Search countries"
           value={countryName}
         />
         <ResetButton onClick={resetState} />

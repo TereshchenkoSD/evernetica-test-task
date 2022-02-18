@@ -21,11 +21,13 @@ const CountryList = ({ countries }) => {
 };
 
 CountryList.propTypes = {
-  images: PropTypes.arrayOf(
+  countries: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
-      webformatURL: PropTypes.string,
-      tags: PropTypes.string,
+      name: PropTypes.string,
+      callingCodes: PropTypes.array,
+      alpha3Code: PropTypes.string,
+      flags: PropTypes.object,
+      capital: PropTypes.string,
     })
   ),
 };

@@ -10,3 +10,13 @@ export const fetchCountries = async (countryName) => {
 
   return response.data;
 };
+
+export const fetchCountry = async (countryName) => {
+  const params =
+    "fields=name,population,area,region,independent,callingCodes,capital,flags";
+
+  const response = await axios.get(`/name/${countryName}?${params}`);
+  console.log(response);
+
+  return response.data;
+};
